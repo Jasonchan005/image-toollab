@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://image-toollab.vercel.app/sitemap.xml
+
+User-agent: *
+Disallow: /css/

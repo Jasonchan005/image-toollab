@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-503ZSLGF0W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-503ZSLGF0W');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Image Converter - Convert WebP, PNG, JPG, AVIF, GIF, BMP Online | ImageToolLab</title>
+  <meta name="description" content="Convert images between WebP, PNG, JPG, AVIF, GIF, BMP and SVG formats. 100% free, no upload. Batch conversion supported. Works in your browser.">
+  <meta name="keywords" content="image converter, webp to png, png to jpg, jpg to webp, webp converter, avif converter, image format converter, free online image converter">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://image-toollab.vercel.app/image-converter.html">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo">ImageToolLab <span class="logo-tag">Free Image Tools</span></a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="tool-page">
+      <a href="/" style="color:var(--primary);font-size:0.9rem;text-decoration:none;">&#8592; Back to all tools</a>
+      <div class="tool-header">
+        <h1>Image Converter</h1>
+        <p>Convert images between WebP, PNG, JPG, AVIF, GIF, BMP, and SVG. Supports batch conversion. 100% free — nothing leaves your browser.</p>
+      </div>
+
+      <div class="tool-container">
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📁</div>
+          <h3>Drop images here or click to upload</h3>
+          <p>Supports JPG, PNG, WebP, AVIF, GIF, BMP, SVG — up to 50 images at once</p>
+          <input type="file" id="fileInput" accept="image/*" multiple>
+        </div>
+
+        <!-- File Info -->
+        <div class="file-info" id="fileInfo">
+          <span class="file-name" id="fileName"></span>
+          <span class="file-size" id="fileSize"></span>
+        </div>
+
+        <!-- Options -->
+        <div class="options-panel" id="optionsPanel" style="display:none;">
+          <h3>Conversion Settings</h3>
+          <div class="option-row">
+            <label>Convert to:</label>
+            <select id="targetFormat">
+              <option value="image/png">PNG (.png)</option>
+              <option value="image/jpeg">JPG (.jpg)</option>
+              <option value="image/webp" selected>WebP (.webp)</option>
+              <option value="image/avif">AVIF (.avif)</option>
+              <option value="image/bmp">BMP (.bmp)</option>
+              <option value="image/gif">GIF (.gif)</option>
+            </select>
+          </div>
+          <div class="option-row" id="qualityRow">
+            <label>Quality:</label>
+            <input type="range" id="quality" min="10" max="100" value="90" style="min-width:200px;">
+            <span id="qualityVal" style="font-size:0.9rem;font-weight:600;">90%</span>
+          </div>
+          <div class="option-row">
+            <label>Background (for PNG/transparent):</label>
+            <select id="bgColor">
+              <option value="white">White</option>
+              <option value="transparent">Transparent (PNG/WebP only)</option>
+              <option value="black">Black</option>
+              <option value="custom">Custom Color</option>
+            </select>
+            <input type="color" id="customBgColor" value="#ffffff" style="display:none;width:40px;height:32px;border:none;cursor:pointer;">
+          </div>
+        </div>
+
+        <!-- Convert Button -->
+        <div style="margin-top:20px;text-align:center;">
+          <button class="btn btn-primary" id="convertBtn" disabled>Convert Images</button>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <p class="progress-text" id="progressText">Converting...</p>
+        </div>
+
+        <!-- Result -->
+        <div class="result-container" id="resultContainer">
+          <div class="result-icon">&#9989;</div>
+          <h3>Conversion Complete!</h3>
+          <p id="resultInfo"></p>
+          <button class="btn btn-success" id="downloadBtn">Download All</button>
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>Free Online Image Converter</h2>
+        <p>ImageToolLab's Image Converter lets you convert images between all popular formats instantly. Whether you need to convert WebP to PNG, JPG to WebP, PNG to AVIF, or any other combination, our tool handles it all.</p>
+        <h2 style="margin-top:20px;">Supported Formats</h2>
+        <ul>
+          <li><strong>PNG:</strong> Best for images with transparency, logos, and screenshots</li>
+          <li><strong>JPG/JPEG:</strong> Best for photographs, small file sizes</li>
+          <li><strong>WebP:</strong> Modern format, smaller files than PNG/JPG with similar quality</li>
+          <li><strong>AVIF:</strong> Next-gen format, even better compression than WebP</li>
+          <li><strong>GIF:</strong> Animated images, limited to 256 colors</li>
+          <li><strong>BMP:</strong> Uncompressed bitmap format</li>
+        </ul>
+        <h2 style="margin-top:20px;">Why Convert Images?</h2>
+        <ul>
+          <li><strong>WebP/AVIF</strong> — Smaller files mean faster website loading and better SEO rankings</li>
+          <li><strong>PNG</strong> — When you need transparency or lossless quality</li>
+          <li><strong>JPG</strong> — Maximum compatibility, smallest photo file sizes</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 ImageToolLab by JCS Labs. All tools are 100% free.</p>
+      <nav>
+        <a href="/">Home</a> &middot;
+        <a href="/image-converter.html">Image Converter</a> &middot;
+        <a href="/image-resizer.html">Image Resizer</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const optionsPanel = document.getElementById('optionsPanel');
+    const convertBtn = document.getElementById('convertBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultContainer = document.getElementById('resultContainer');
+    const resultInfo = document.getElementById('resultInfo');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const targetFormat = document.getElementById('targetFormat');
+    const qualitySlider = document.getElementById('quality');
+    const qualityVal = document.getElementById('qualityVal');
+    const bgColorSelect = document.getElementById('bgColor');
+    const customBgColor = document.getElementById('customBgColor');
+
+    let files = [];
+    let convertedBlobs = [];
+
+    // Events
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    qualitySlider.addEventListener('input', () => { qualityVal.textContent = qualitySlider.value + '%'; });
+
+    targetFormat.addEventListener('change', () => {
+      const fmt = targetFormat.value;
+      const showQuality = ['image/jpeg', 'image/webp', 'image/avif'].includes(fmt);
+      document.getElementById('qualityRow').style.display = showQuality ? 'flex' : 'none';
+    });
+
+    bgColorSelect.addEventListener('change', () => {
+      customBgColor.style.display = bgColorSelect.value === 'custom' ? 'inline-block' : 'none';
+    });
+
+    downloadBtn.addEventListener('click', downloadAll);
+    convertBtn.addEventListener('click', convertImages);
+
+    function handleFiles(fileList) {
+      files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+      if (files.length === 0) return;
+      document.getElementById('fileName').textContent = files.length === 1 ? files[0].name : `${files.length} images selected`;
+      const totalSize = files.reduce((s, f) => s + f.size, 0);
+      document.getElementById('fileSize').textContent = formatSize(totalSize);
+      fileInfo.classList.add('show');
+      optionsPanel.style.display = 'block';
+      convertBtn.disabled = false;
+      resultContainer.classList.remove('show');
+    }
+
+    async function convertImages() {
+      convertBtn.disabled = true;
+      progressContainer.classList.add('show');
+      resultContainer.classList.remove('show');
+      convertedBlobs = [];
+      const format = targetFormat.value;
+      const quality = qualitySlider.value / 100;
+      const ext = getExt(format);
+
+      for (let i = 0; i < files.length; i++) {
+        progressText.textContent = `Converting ${i + 1} of ${files.length}...`;
+        progressBar.style.width = ((i + 1) / files.length * 100) + '%';
+        try {
+          const blob = await convertOne(files[i], format, quality);
+          convertedBlobs.push({ blob, name: files[i].name.replace(/\.[^.]+$/, '') + '.' + ext });
+        } catch (err) {
+          console.error('Convert error:', files[i].name, err);
+        }
+        // Yield to UI
+        await new Promise(r => setTimeout(r, 10));
+      }
+
+      const totalBefore = files.reduce((s, f) => s + f.size, 0);
+      const totalAfter = convertedBlobs.reduce((s, b) => s + b.blob.size, 0);
+      const savings = totalBefore > 0 ? Math.round((1 - totalAfter / totalBefore) * 100) : 0;
+
+      resultInfo.textContent = `${convertedBlobs.length} image(s) converted. ${formatSize(totalBefore)} → ${formatSize(totalAfter)} (${savings > 0 ? savings + '% smaller' : savings < 0 ? Math.abs(savings) + '% larger' : 'same size'})`;
+      progressContainer.classList.remove('show');
+      resultContainer.classList.add('show');
+      convertBtn.disabled = false;
+    }
+
+    function convertOne(file, format, quality) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            const bg = bgColorSelect.value;
+            if (bg === 'white') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+            else if (bg === 'black') { ctx.fillStyle = '#000000'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+            else if (bg === 'custom') { ctx.fillStyle = customBgColor.value; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+            ctx.drawImage(img, 0, 0);
+
+            // For AVIF, try native canvas support first
+            canvas.toBlob((blob) => {
+              if (blob) resolve(blob);
+              else reject(new Error('Conversion failed'));
+            }, format, quality);
+          };
+          img.onerror = () => reject(new Error('Failed to load image'));
+          img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function downloadAll() {
+      convertedBlobs.forEach(({ blob, name }) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    function getExt(mime) {
+      const map = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/avif': 'avif', 'image/bmp': 'bmp', 'image/gif': 'gif' };
+      return map[mime] || 'png';
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+  </script>
+
+</body>
+</html>

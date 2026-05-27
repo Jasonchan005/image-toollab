@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-503ZSLGF0W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-503ZSLGF0W');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Image Resizer - Resize Images Online | ImageToolLab</title>
+  <meta name="description" content="Resize images online for free. Set custom width, height, or scale by percentage. Maintain aspect ratio. Batch resize supported. No upload needed.">
+  <meta name="keywords" content="image resizer, resize image online, resize photo, image dimensions, resize by percentage, bulk image resizer, free image resizer">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://image-toollab.vercel.app/image-resizer.html">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="logo">ImageToolLab <span class="logo-tag">Free Image Tools</span></a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="tool-page">
+      <a href="/" style="color:var(--primary);font-size:0.9rem;text-decoration:none;">&#8592; Back to all tools</a>
+      <div class="tool-header">
+        <h1>Image Resizer</h1>
+        <p>Resize images by exact dimensions or percentage. Maintain aspect ratio or set custom sizes. Batch resize up to 50 images at once.</p>
+      </div>
+
+      <div class="tool-container">
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📁</div>
+          <h3>Drop images here or click to upload</h3>
+          <p>Supports JPG, PNG, WebP, AVIF, GIF, BMP — up to 50 images at once</p>
+          <input type="file" id="fileInput" accept="image/*" multiple>
+        </div>
+
+        <!-- File Info -->
+        <div class="file-info" id="fileInfo">
+          <span class="file-name" id="fileName"></span>
+          <span class="file-size" id="fileSize"></span>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-container" id="previewContainer" style="display:none;">
+          <img id="previewImg" src="" alt="Preview">
+          <p class="preview-info" id="previewInfo"></p>
+        </div>
+
+        <!-- Options -->
+        <div class="options-panel" id="optionsPanel" style="display:none;">
+          <h3>Resize Settings</h3>
+          <div class="option-row">
+            <label>Resize mode:</label>
+            <select id="resizeMode">
+              <option value="percentage">By Percentage</option>
+              <option value="exact">Exact Dimensions</option>
+              <option value="max">Max Width/Height</option>
+              <option value="width">Set Width (auto height)</option>
+              <option value="height">Set Height (auto width)</option>
+            </select>
+          </div>
+
+          <!-- Percentage mode -->
+          <div id="percentageOptions">
+            <div class="option-row">
+              <label>Scale:</label>
+              <input type="number" id="scalePercent" value="50" min="1" max="500" style="width:100px;">
+              <span style="font-size:0.9rem;color:var(--text-muted);">%</span>
+              <button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem;margin-left:8px;" onclick="setPreset(25)">25%</button>
+              <button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem;" onclick="setPreset(50)">50%</button>
+              <button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem;" onclick="setPreset(75)">75%</button>
+              <button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem;" onclick="setPreset(150)">150%</button>
+              <button class="btn btn-primary" style="padding:6px 14px;font-size:0.85rem;" onclick="setPreset(200)">200%</button>
+            </div>
+          </div>
+
+          <!-- Exact mode -->
+          <div id="exactOptions" style="display:none;">
+            <div class="option-row">
+              <label>Width:</label>
+              <input type="number" id="newWidth" value="800" min="1" max="10000" style="width:120px;"> px
+              <label style="margin-left:20px;">Height:</label>
+              <input type="number" id="newHeight" value="600" min="1" max="10000" style="width:120px;"> px
+              <label style="margin-left:12px;">
+                <input type="checkbox" id="lockAspect" checked> Lock aspect ratio
+              </label>
+            </div>
+          </div>
+
+          <!-- Max mode -->
+          <div id="maxOptions" style="display:none;">
+            <div class="option-row">
+              <label>Max dimension:</label>
+              <input type="number" id="maxDimension" value="1920" min="1" max="10000" style="width:120px;"> px
+              <span style="font-size:0.85rem;color:var(--text-muted);">Image will fit within this size</span>
+            </div>
+          </div>
+
+          <!-- Width only mode -->
+          <div id="widthOptions" style="display:none;">
+            <div class="option-row">
+              <label>Width:</label>
+              <input type="number" id="setWidth" value="800" min="1" max="10000" style="width:120px;"> px
+              <span style="font-size:0.85rem;color:var(--text-muted);">Height auto-calculated</span>
+            </div>
+          </div>
+
+          <!-- Height only mode -->
+          <div id="heightOptions" style="display:none;">
+            <div class="option-row">
+              <label>Height:</label>
+              <input type="number" id="setHeight" value="600" min="1" max="10000" style="width:120px;"> px
+              <span style="font-size:0.85rem;color:var(--text-muted);">Width auto-calculated</span>
+            </div>
+          </div>
+
+          <!-- Output format -->
+          <div class="option-row" style="margin-top:15px;">
+            <label>Output format:</label>
+            <select id="outputFormat">
+              <option value="same">Same as original</option>
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+            <label style="margin-left:15px;">Quality:</label>
+            <input type="range" id="resizeQuality" min="10" max="100" value="90" style="min-width:120px;">
+            <span id="resizeQualityVal" style="font-size:0.85rem;font-weight:600;">90%</span>
+          </div>
+        </div>
+
+        <!-- Resize Button -->
+        <div style="margin-top:20px;text-align:center;">
+          <button class="btn btn-primary" id="resizeBtn" disabled>Resize Images</button>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <p class="progress-text" id="progressText">Resizing...</p>
+        </div>
+
+        <!-- Result -->
+        <div class="result-container" id="resultContainer">
+          <div class="result-icon">&#9989;</div>
+          <h3>Resize Complete!</h3>
+          <p id="resultInfo"></p>
+          <button class="btn btn-success" id="downloadBtn">Download All</button>
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>Free Online Image Resizer</h2>
+        <p>Resize your images instantly in the browser. No upload needed, no server processing — everything happens on your device for maximum privacy and speed.</p>
+        <h2 style="margin-top:20px;">Common Use Cases</h2>
+        <ul>
+          <li><strong>Social media:</strong> Resize to 1080x1080 (Instagram), 1200x630 (Facebook/Og), 1500x500 (Twitter header)</li>
+          <li><strong>Web optimization:</strong> Reduce image dimensions to speed up website loading</li>
+          <li><strong>Email attachments:</strong> Make photos smaller to fit email size limits</li>
+          <li><strong>E-commerce:</strong> Standardize product image dimensions</li>
+          <li><strong>Thumbnails:</strong> Quickly create smaller preview versions of large photos</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 ImageToolLab by JCS Labs. All tools are 100% free.</p>
+      <nav>
+        <a href="/">Home</a> &middot;
+        <a href="/image-converter.html">Image Converter</a> &middot;
+        <a href="/image-resizer.html">Image Resizer</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImg = document.getElementById('previewImg');
+    const previewInfo = document.getElementById('previewInfo');
+    const optionsPanel = document.getElementById('optionsPanel');
+    const resizeBtn = document.getElementById('resizeBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultContainer = document.getElementById('resultContainer');
+    const resultInfo = document.getElementById('resultInfo');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resizeMode = document.getElementById('resizeMode');
+    const resizeQuality = document.getElementById('resizeQuality');
+    const resizeQualityVal = document.getElementById('resizeQualityVal');
+
+    let files = [];
+    let resizedBlobs = [];
+    let originalWidth = 0, originalHeight = 0;
+
+    // Events
+    uploadArea.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+    uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    resizeMode.addEventListener('change', showModeOptions);
+    resizeQuality.addEventListener('input', () => { resizeQualityVal.textContent = resizeQuality.value + '%'; });
+    downloadBtn.addEventListener('click', downloadAll);
+    resizeBtn.addEventListener('click', resizeImages);
+
+    // Lock aspect ratio
+    document.getElementById('lockAspect').addEventListener('change', function() {
+      if (this.checked && originalWidth > 0) {
+        document.getElementById('newHeight').value = Math.round(originalHeight / originalWidth * document.getElementById('newWidth').value);
+      }
+    });
+    document.getElementById('newWidth').addEventListener('input', function() {
+      if (document.getElementById('lockAspect').checked && originalWidth > 0) {
+        document.getElementById('newHeight').value = Math.round(originalHeight / originalWidth * this.value);
+      }
+    });
+    document.getElementById('newHeight').addEventListener('input', function() {
+      if (document.getElementById('lockAspect').checked && originalHeight > 0) {
+        document.getElementById('newWidth').value = Math.round(originalWidth / originalHeight * this.value);
+      }
+    });
+
+    function showModeOptions() {
+      const mode = resizeMode.value;
+      document.getElementById('percentageOptions').style.display = mode === 'percentage' ? 'block' : 'none';
+      document.getElementById('exactOptions').style.display = mode === 'exact' ? 'block' : 'none';
+      document.getElementById('maxOptions').style.display = mode === 'max' ? 'block' : 'none';
+      document.getElementById('widthOptions').style.display = mode === 'width' ? 'block' : 'none';
+      document.getElementById('heightOptions').style.display = mode === 'height' ? 'block' : 'none';
+    }
+
+    function setPreset(val) {
+      document.getElementById('scalePercent').value = val;
+    }
+
+    function handleFiles(fileList) {
+      files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+      if (files.length === 0) return;
+      document.getElementById('fileName').textContent = files.length === 1 ? files[0].name : `${files.length} images selected`;
+      const totalSize = files.reduce((s, f) => s + f.size, 0);
+      document.getElementById('fileSize').textContent = formatSize(totalSize);
+      fileInfo.classList.add('show');
+      optionsPanel.style.display = 'block';
+      resizeBtn.disabled = false;
+      resultContainer.classList.remove('show');
+
+      // Preview first image
+      if (files.length > 0) {
+        const url = URL.createObjectURL(files[0]);
+        previewImg.src = url;
+        previewImg.onload = () => {
+          originalWidth = previewImg.naturalWidth;
+          originalHeight = previewImg.naturalHeight;
+          previewInfo.textContent = `Original: ${originalWidth} x ${originalHeight} px`;
+          document.getElementById('newWidth').value = originalWidth;
+          document.getElementById('newHeight').value = originalHeight;
+        };
+        previewContainer.style.display = 'block';
+      }
+    }
+
+    async function resizeImages() {
+      resizeBtn.disabled = true;
+      progressContainer.classList.add('show');
+      resultContainer.classList.remove('show');
+      resizedBlobs = [];
+      const mode = resizeMode.value;
+      const quality = resizeQuality.value / 100;
+      const outputFmt = document.getElementById('outputFormat').value;
+
+      for (let i = 0; i < files.length; i++) {
+        progressText.textContent = `Resizing ${i + 1} of ${files.length}...`;
+        progressBar.style.width = ((i + 1) / files.length * 100) + '%';
+        try {
+          const result = await resizeOne(files[i], mode, quality, outputFmt);
+          resizedBlobs.push(result);
+        } catch (err) {
+          console.error('Resize error:', files[i].name, err);
+        }
+        await new Promise(r => setTimeout(r, 10));
+      }
+
+      const totalBefore = files.reduce((s, f) => s + f.size, 0);
+      const totalAfter = resizedBlobs.reduce((s, b) => s + b.blob.size, 0);
+      resultInfo.textContent = `${resizedBlobs.length} image(s) resized. ${formatSize(totalBefore)} → ${formatSize(totalAfter)}`;
+      progressContainer.classList.remove('show');
+      resultContainer.classList.add('show');
+      resizeBtn.disabled = false;
+    }
+
+    function resizeOne(file, mode, quality, outputFmt) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.naturalWidth, h = img.naturalHeight;
+            let newW, newH;
+
+            switch (mode) {
+              case 'percentage':
+                const scale = parseInt(document.getElementById('scalePercent').value) / 100;
+                newW = Math.round(w * scale);
+                newH = Math.round(h * scale);
+                break;
+              case 'exact':
+                newW = parseInt(document.getElementById('newWidth').value) || w;
+                newH = parseInt(document.getElementById('newHeight').value) || h;
+                break;
+              case 'max':
+                const maxDim = parseInt(document.getElementById('maxDimension').value) || 1920;
+                if (w > h) { newW = maxDim; newH = Math.round(h * maxDim / w); }
+                else { newH = maxDim; newW = Math.round(w * maxDim / h); }
+                break;
+              case 'width':
+                newW = parseInt(document.getElementById('setWidth').value) || w;
+                newH = Math.round(h * newW / w);
+                break;
+              case 'height':
+                newH = parseInt(document.getElementById('setHeight').value) || h;
+                newW = Math.round(w * newH / h);
+                break;
+            }
+
+            newW = Math.max(1, newW);
+            newH = Math.max(1, newH);
+            canvas.width = newW;
+            canvas.height = newH;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, newW, newH);
+
+            const fmt = outputFmt === 'same' ? file.type : outputFmt;
+            const ext = getExt(fmt);
+
+            canvas.toBlob((blob) => {
+              if (blob) {
+                const name = file.name.replace(/\.[^.]+$/, '') + `_resized.${ext}`;
+                resolve({ blob, name, width: newW, height: newH });
+              } else {
+                reject(new Error('Resize failed'));
+              }
+            }, fmt, quality);
+          };
+          img.onerror = () => reject(new Error('Failed to load image'));
+          img.src = e.target.result;
+        };
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function downloadAll() {
+      resizedBlobs.forEach(({ blob, name }) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    function getExt(mime) {
+      const map = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/avif': 'avif', 'image/bmp': 'bmp', 'image/gif': 'gif' };
+      return map[mime] || 'png';
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+  </script>
+
+</body>
+</html>
