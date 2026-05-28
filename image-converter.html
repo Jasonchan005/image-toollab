@@ -8,6 +8,10 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-503ZSLGF0W');
+
+    function trackEvent(action, params) {
+      if (typeof gtag === 'function') gtag('event', action, params || {});
+    }
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -204,6 +208,7 @@
     }
 
     async function convertImages() {
+      trackEvent("convert_start", { tool: "image_converter", file_count: files.length, target_format: targetFormat.value });
       convertBtn.disabled = true;
       progressContainer.classList.add('show');
       resultContainer.classList.remove('show');
@@ -233,6 +238,7 @@
       progressContainer.classList.remove('show');
       resultContainer.classList.add('show');
       convertBtn.disabled = false;
+      trackEvent("convert_success", { tool: "image_converter", file_count: convertedBlobs.length, target_format: targetFormat.value });
     }
 
     function convertOne(file, format, quality) {
